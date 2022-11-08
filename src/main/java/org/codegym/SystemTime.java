@@ -8,5 +8,6 @@ public class SystemTime {
         Date now = new Date(); //Lấy ra thời gian hiện tại
 
         System.out.println("Now is: " + now);
+        //aaaaaaaaaaaaaaaaaaaaS
     }
 }
