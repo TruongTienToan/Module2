@@ -5,53 +5,53 @@ import java.util.Scanner;
 public class ReadNumber {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Nhập số cần chuyển: ");
+        System.out.print("Nhập số cần chuyển: ");
         int number = scanner.nextInt();
         String[] string =
                 {"One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine "};
         String[] string2 =
                 {"Ten ", "Eleven ", "Twelve ", "Thirteen ", "Fourteen ", "Fifteen ", "Sixteen ", "Seventeen ", "Eighteen ", "Nineteen "};
         while (number >= 1000) {
-            System.out.println("Nhập lại số nhỏ hơn 1000: ");
+            System.out.print("Nhập lại số nhỏ hơn 1000: ");
             number = scanner.nextInt();
         }
         if (number == 0) {
-            System.out.println("Zero");
+            System.out.print("Zero");
         } else {
             switch (number / 100) {
                 case 1:
-                    System.out.println("One hundred ");
+                    System.out.print("One hundred ");
                     break;
                 case 2:
-                    System.out.println("Two hundred ");
+                    System.out.print("Two hundred ");
                     break;
                 case 3:
-                    System.out.println("Three hundred ");
+                    System.out.print("Three hundred ");
                     break;
                 case 4:
-                    System.out.println("Four hundred ");
+                    System.out.print("Four hundred ");
                     break;
                 case 5:
-                    System.out.println("Five hundred ");
+                    System.out.print("Five hundred ");
                     break;
                 case 6:
-                    System.out.println("Six hundred ");
+                    System.out.print("Six hundred ");
                     break;
                 case 7:
-                    System.out.println("Seven hundred ");
+                    System.out.print("Seven hundred ");
                     break;
                 case 8:
-                    System.out.println("Eight hundred ");
+                    System.out.print("Eight hundred ");
                     break;
                 case 9:
-                    System.out.println("Nine hundred ");
+                    System.out.print("Nine hundred ");
                     break;
                 default:
-                    System.out.println("");
+                    System.out.print("");
             }
             switch ((number % 100) / 10) {
                 case 0:
-                    System.out.println("");
+                    System.out.print("");
                     break;
                 case 1:
                     for (int i = 0; i < string2.length; i++) {
