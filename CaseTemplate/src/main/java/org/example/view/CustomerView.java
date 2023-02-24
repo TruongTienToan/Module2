@@ -1,20 +1,17 @@
 package org.example.view;
 
-import java.io.IOException;
 import java.util.*;
 
 import org.example.model.Customer;
 import org.example.model.CustomerType;
 import org.example.service.ICustomerService;
 import org.example.service.file.FCustomerService;
-import org.example.service.implement.CustomerServiceImpl;
 import org.example.utils.DateUtils;
 
 
 public class CustomerView {
     private Scanner scanner = new Scanner(System.in);
 
-    // IM viết tắt: immemory
     private ICustomerService customerService;
     public void launcher() {
         boolean checkActionMenu = false;
@@ -23,6 +20,7 @@ public class CustomerView {
             System.out.println("1. Xem danh sách khách hàng");
             System.out.println("2. Thêm khách hàng");
             System.out.println("3. Sửa thông tin khách hàng");
+            System.out.println("4. Xóa khách hàng");
 
             int actionMenu = Integer.parseInt(scanner.nextLine());
             switch (actionMenu) {
@@ -34,6 +32,9 @@ public class CustomerView {
                     break;
                 case 3:
                     editCustomerView();
+                    break;
+                case 4:
+                    deleteCustomerView();
                     break;
                 default:
                     System.out.println("Nhập không đúng vui lòng nhập lại");
@@ -62,56 +63,20 @@ public class CustomerView {
         } while (checkActionMenu);
     }
 
-//    private void editCustomerView() {
-//        boolean checkActionMenu = false;
-//        do {
-//            System.out.println("Bạn muốn sửa thông tin nào");
-//            System.out.println("1. Sửa theo tên");
-//            System.out.println("2. Sửa theo số điện thoại");
-//            System.out.println("3. Cập nhật loại khách hàng");
-//
-//            int actionMenu = Integer.parseInt(scanner.nextLine());
-//            switch (actionMenu) {
-//                case 1:
-//                    editCustomerByNameView();
-//                    break;
-//
-//                case 3:
-//                    editCustomerByCustomerTypeView();
-//                    break;
-//                default:
-//                    System.out.println("Nhập không đúng vui lòng nhập lại");
-//                    checkActionMenu = true;
-//                    continue;
-//            }
-//            boolean checkActionMenuContinue = false;
-//            do{
-//                checkActionMenuContinue = false;
-//                System.out.println("Bạn có muốn tiếp tục hay không Yes(Y)/No(N)");
-//                String actionMenuContinue = scanner.nextLine();
-//                switch (actionMenuContinue) {
-//                    case "Y":
-//                        checkActionMenu = true;
-//                        break;
-//                    case "N":
-//                        checkActionMenu = false;
-//                        break;
-//                    default:
-//                        System.out.println("Nhập không không đúng vui lòng nhập lai");
-//                        checkActionMenuContinue = true;
-//
-//                }
-//            }while (checkActionMenuContinue);
-//
-//        } while (checkActionMenu);
-//    }
+    private void deleteCustomerView() {
+        Customer customer = new Customer();
+        customerService.deleteCustomer(customer.getId());
+        System.out.println("Xoas khach hang thanh cong!");
+        showCustomersView();
+    }
+
 
     private void editCustomerByCustomerTypeView() {
 
 
     }
 
-    private void editCustomerView() {
+    private void   editCustomerView() {
 
             Scanner scanner = new Scanner(System.in);
 
@@ -139,23 +104,7 @@ public class CustomerView {
 
             customerService.updateCustomer(customer.getId(), customer);
             System.out.println("Thông tin khách hàng đã được caập nhật vào file");
-
-
-
-//        System.out.println("Nhập ID khách hàng bạn muốn sửa");
-//        long idCustomer = Long.parseLong(scanner.nextLine());
-//
-//        Customer customer = customerService.findCustomerById(idCustomer);
-//        if (customer == null) {
-//
-//        }else{
-//            System.out.println("Nhập tên mới: ");
-//            String nameCustomer = scanner.nextLine();
-//
-//            customer.setName(nameCustomer);
-//            customerService.updateCustomer(customer.getId(), customer);
-//            showCustomersView();
-//        }
+            showCustomersView();
 
     }
 
@@ -197,18 +146,8 @@ public class CustomerView {
         customer.setCreateAt(DateUtils.parseDate(createdAt));
 
         customerService.addCustomer(customer);
-
+        System.out.println("Thêm khách hàng thành công!");
+        showCustomersView();
     }
 
-    private long getMaxID() {
-        List<Customer> customers = customerService.getAllCustomers();
-        long idMax = -1;
-        for (int i = 0; i < customers.size(); i++) {
-            long currentId = customers.get(i).getId();
-            if (currentId > idMax) {
-                idMax = currentId;
-            }
-        }
-        return idMax;
-    }
 }

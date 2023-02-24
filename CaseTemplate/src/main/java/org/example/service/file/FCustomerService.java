@@ -3,6 +3,7 @@ package org.example.service.file;
 import org.example.model.Customer;
 import org.example.model.CustomerType;
 import org.example.service.ICustomerService;
+import org.example.service.implement.CustomerServiceImpl;
 import org.example.utils.DateUtils;
 
 import java.io.*;
@@ -101,6 +102,31 @@ public class FCustomerService implements ICustomerService {
         customer.setId(lastId);
         customers.add(customer);
 
+        try {
+            FileWriter fileWriter = new FileWriter(pathCustomer);
+            for (int i = 0; i < customers.size(); i++) {
+                Customer c = customers.get(i);
+                fileWriter.write(c.toString());
+                if (i != customers.size()) {
+                    fileWriter.write("\n");
+                }
+            }
+            fileWriter.close();
+        } catch (IOException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteCustomer(long idCustomer) {
+        Scanner scanner = new Scanner(System.in);
+        List<Customer> customers = getAllCustomers();
+        System.out.println("Nhập id khách hàng cần xóa: ");
+        long id = Long.parseLong(scanner.nextLine());
+        Customer customer = findCustomerById(id);
+        if (customer != null) {
+            customers.remove(customer);
+        }
         try {
             FileWriter fileWriter = new FileWriter(pathCustomer);
             for (int i = 0; i < customers.size(); i++) {

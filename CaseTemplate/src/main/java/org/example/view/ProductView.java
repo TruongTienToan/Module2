@@ -1,10 +1,12 @@
 package org.example.view;
 
 import org.example.comparator.ComparatorByPrice;
+import org.example.model.Customer;
 import org.example.model.Product;
 import org.example.service.IProductService;
 import org.example.service.file.FProductService;
 import org.example.service.implement.ProductServiceImpl;
+import org.example.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -27,17 +29,22 @@ public class ProductView {
             System.out.println("4. Cập nhật sản phẩm");
             System.out.println("5. Sắp xếp sản phẩm theo giá");
             System.out.println("6. Sắp xếp sản phẩm theo tên");         // bài 1
-//            System.out.println("7. Sắp xếp sản phẩm theo ngày");
-            System.out.println("8. Tìm kiếm sản phẩm theo tên");
-            System.out.println("9. Tìm kiếm sản phẩm theo khoảng giá  (từ giá mấy đến giá mấy đó)");     // bài 2
+            System.out.println("7. Tìm kiếm sản phẩm theo tên");
+            System.out.println("8. Tìm kiếm sản phẩm theo khoảng giá");     // bài 2
             System.out.println("9. Tìm kiếm sản phẩm theo tên hoặc giá hoặc theo mô tả");   // bài 3
             int actionMenu = Integer.parseInt(scanner.nextLine());
             switch (actionMenu) {
                 case 1:
                     showProductsView();
                     break;
+                case 2:
+                    addProductView();
+                    break;
                 case 3:
                     deleteProductView();
+                    break;
+                case 4:
+                    updateProductView();
                     break;
                 case 5:
                     sortProductByPriceView();
@@ -45,8 +52,8 @@ public class ProductView {
                 case 6:
                     sortProductByNameView();
                     break;
-                case 8:
-                    searchProductView();
+                case 7:
+                    searchProductByNameView();
                     break;
                 default:
                     System.out.println("Nhập không đúng vui lòng nhập lại");
@@ -75,6 +82,62 @@ public class ProductView {
         } while (checkActionMenu);
     }
 
+    private void updateProductView() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Nhập id san pham cần sửa: ");
+        long id = Long.parseLong(scanner.nextLine());
+        Product product = productService.findProductById(id);
+
+        System.out.println("Nhập tên san pham mới: ");
+        String name = scanner.nextLine();
+        if (!name.isEmpty()) {
+            product.setName(name);
+        }
+
+        System.out.println("Nhập mo ta san pham: ");
+        String description = scanner.nextLine();
+        if (!description.isEmpty()) {
+            product.setDescription(description);
+        }
+
+        System.out.println("Nhập gia moi: ");
+        double price = Double.parseDouble(scanner.nextLine());
+        product.setPrice(price);
+
+        System.out.println("Nhap ngay sua: ");
+        String createAt = scanner.nextLine();
+        if (!createAt.isEmpty()) {
+            product.setDescription(createAt);
+        }
+
+        productService.updateProductById(product.getId(), product);
+        System.out.println("Thông tin san pham đã được caập nhật vào file");
+        showProductsView();
+    }
+
+    private void addProductView() {
+        Product product = new Product();
+        System.out.println("Nhap thong tin san pham");
+        System.out.println("Nhap ten san pham: ");
+        String name = scanner.nextLine();
+        System.out.println("Nhap mo ta san pham: ");
+        String description = scanner.nextLine();
+        System.out.println("Nhap gia san pham: ");
+        double price = Double.parseDouble(scanner.nextLine());
+        System.out.println("Nhap ngay tao: ");
+        String createAt = scanner.nextLine();
+
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setCreateAt(DateUtils.parseDate(createAt));
+
+        productService.addProduct(product);
+        System.out.println("Thêm san pham thành công!");
+        showProductsView();
+    }
+
     public ProductView() {
         productService = new FProductService();
     }
@@ -90,9 +153,9 @@ public class ProductView {
         }
     }
     public void deleteProductView() {
-        System.out.println("Nhập id cần xóa: ");
-        long idProduct = Long.parseLong(scanner.nextLine());
-        productService.deleteProductById(idProduct);
+        Product product = new Product();
+        productService.deleteProductById(product.getId());
+        System.out.println("Xoas san pham thanh cong!");
         showProductsView();
     }
 
@@ -105,7 +168,7 @@ public class ProductView {
         showResultProductsView(productSorts);
     }
 
-    public void searchProductView() {
+    public void searchProductByNameView() {
         System.out.println("Tìm kiếm theo tên: ");
         String nameSearch = scanner.nextLine();
 

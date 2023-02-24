@@ -8,6 +8,7 @@ import org.example.utils.DateUtils;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class FProductService implements IProductService {
     private final String  pathProduct = "./data/product.csv";
@@ -70,12 +71,53 @@ public class FProductService implements IProductService {
 
     @Override
     public void deleteProductById(long idProduct) {
-
+        Scanner scanner = new Scanner(System.in);
+        List<Product> products = getAllProducts();
+        System.out.println("Nhập id khách hàng cần xóa: ");
+        long id = Long.parseLong(scanner.nextLine());
+        Product product = findProductById(id);
+        if (product != null) {
+            products.remove(product);
+        }
+        try {
+            FileWriter fileWriter = new FileWriter(pathProduct);
+            for (int i = 0; i < products.size(); i++) {
+                Product p = products.get(i);
+                fileWriter.write(p.toString());
+                if (i != products.size()) {
+                    fileWriter.write("\n");
+                }
+            }
+            fileWriter.close();
+        } catch (IOException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
     }
 
     @Override
     public void updateProductById(long idProduct, Product product) {
-
+        List<Product> products = getAllProducts();
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId() == idProduct) {
+                products.get(i).setName(product.getName());
+                products.get(i).setDescription(product.getDescription());
+                products.get(i).setPrice(product.getPrice());
+                products.get(i).setCreateAt(product.getCreateAt());
+            }
+        }
+        try {
+            FileWriter fileWriter = new FileWriter(pathProduct);
+            for (int i = 0; i < products.size(); i++) {
+                Product p = products.get(i);
+                fileWriter.write(p.toString());
+                if (i != products.size()) {
+                    fileWriter.write("\n");
+                }
+            }
+            fileWriter.close();
+        } catch (IOException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
     }
 
     @Override

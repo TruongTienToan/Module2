@@ -61,4 +61,9 @@ public class CustomerServiceImpl implements ICustomerService {
     public void addCustomer(Customer customer) {
 
     }
+
+    @Override
+    public void deleteCustomer(long idCustomer) {
+
+    }
 }
